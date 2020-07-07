@@ -1,6 +1,6 @@
 // https://www.geeksforgeeks.org/expression-tree/
 
-/*
+/**
 * A tree node.
 */
 // library tree;
@@ -15,12 +15,12 @@ class Node {
   }
 }
 
-/*
+/**
 * An expression tree for the calculator.
 */ 
 class ExpressionTree {
   
-  /*
+  /**
   * Checks whether the given char is an operator or not.
   * In this project, only four main operators are mandatory.
   */
@@ -30,6 +30,6 @@ class ExpressionTree {
     }
     return false;
   }
-  
+
 
 }
