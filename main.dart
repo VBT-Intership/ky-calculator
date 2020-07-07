@@ -1,6 +1,18 @@
 import 'dart:collection';
+import 'dart:mirrors';
 import "src/tree.dart";
 
+Object pop(Queue q) {
+  var r = q.last;
+  q.removeLast();
+  return r;
+}
+bool parentheses(String c) {
+  if (c == "(" || c ==")") {
+    return true;
+  }
+  return false;
+}
 bool left_parentheses(String c) {
   if (c == "(") {
     return true;
@@ -33,9 +45,12 @@ bool isOperand(String c) {
  * Returns true if topStack operator have higher precedence.
  */
 bool check_precedence(String top, String given) { 
-  var ops = ["(", ")", "+", "-", "/", "*"];
+  // var ops = ["(", ")", "+", "-", "/", "*"]; 
+  var high = ["/", "*"];
+  var low = ["(", ")", "+", "-"];
   //TODO: May there be given two equivalent precedence?
-  if (ops.indexOf(top) >= ops.indexOf(given)) { // greater or equal.
+  //if (ops.indexOf(top) >= ops.indexOf(given)) { // greater or equal.
+  if (high.contains(top) && low.contains(given)) {
     return true;
   }
   return false;
@@ -44,42 +59,50 @@ bool check_precedence(String top, String given) {
 void main() {
   Queue q = new Queue(); // As a stack.
   var postfix = new StringBuffer();
-  String test = "(2+5)*3+1";
-  //String test = "8*((3 + 4) − 5)";
+  //String test = "(2+5)*3+1";
+  String test = "8 *((3+4) - 5)";
+  test = test.replaceAll(new RegExp(r"\s+"), "");
+  //String test = "(3 - 4)+2";
   var char_arr = test.split("");
-  
+  /**
+   * CHECK - 1: Operand?
+   * CHECK - 2: Operator?
+   * CHECK - 2b: Precedence?
+   * CHECK - 3: Parentheses?
+   */
   for (int i = 0; i < char_arr.length; i++) {
-    var cur = char_arr[i];
-    if (isOperand(cur)) { // Operand?
-      postfix.write(cur);
+    var e = char_arr[i];
+    if (isOperand(e)) {     // CHECK - 1
+      postfix.write(e);
     }
-    else if (isOperator(cur)) { // Operator?
-      if (q.isEmpty) {
-        q.add(cur);
-      } else { // Other operators in the stack, need to check precedence
-        if (check_precedence(q.last, cur)) {
-
-          postfix.write(q.last); // Remove last from queue, append to postfix.
-          q.removeLast();
-        } else { // Lower precedence
-          q.add(cur);
+    if (isOperator(e)) {     // CHECK - 2
+      if (q.isEmpty) { // initial stack.
+        q.add(e);
+      } else { // Precedence check.
+        if (check_precedence(q.last, e)) {     // CHECK - 2b
+          //postfix.write(q.last);
+          //q.removeLast();
+          postfix.write(pop(q));
+        }
+        q.add(e); // Finally, add current operator to stack.
+      }
+    }
+    if (parentheses(e)) {     // CHECK - 3
+      if (left_parentheses(e)) {
+        q.add(e);
+      } else { // Right parentheses
+        while (q.isNotEmpty) {
+          var p = pop(q);
+          if (p == "(") {
+            break;
+          }
+          postfix.write(p);
         }
       }
     }
-    else if (left_parentheses(cur)) {
-      q.add(cur);
-    }
-    else if (right_parentheses(cur)) {
-      print(q.toList());
-      while (q.last == "(" || q.isEmpty) {
-        postfix.write(q.last);
-        q.removeLast();
-      }
-    }
   }
-  while (q.isNotEmpty) {
-    postfix.write(q.last);
-    q.removeLast();
+  while(q.isNotEmpty) {
+    postfix.write(pop(q));
   }
   print(postfix);
 }
