@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:mirrors';
 import "src/tree.dart";
 
 Object pop(Queue q) {
@@ -45,11 +44,9 @@ bool isOperand(String c) {
  * Returns true if topStack operator have higher precedence.
  */
 bool check_precedence(String top, String given) { 
-  // var ops = ["(", ")", "+", "-", "/", "*"]; 
   var high = ["/", "*"];
   var low = ["(", ")", "+", "-"];
   //TODO: May there be given two equivalent precedence?
-  //if (ops.indexOf(top) >= ops.indexOf(given)) { // greater or equal.
   if (high.contains(top) && low.contains(given)) {
     return true;
   }
@@ -61,8 +58,8 @@ void main() {
   var postfix = new StringBuffer();
   //String test = "(2+5)*3+1";
   String test = "8 *((3+4) - 5)";
-  test = test.replaceAll(new RegExp(r"\s+"), "");
   //String test = "(3 - 4)+2";
+  test = test.replaceAll(new RegExp(r"\s+"), "");
   var char_arr = test.split("");
   /**
    * CHECK - 1: Operand?
@@ -80,8 +77,6 @@ void main() {
         q.add(e);
       } else { // Precedence check.
         if (check_precedence(q.last, e)) {     // CHECK - 2b
-          //postfix.write(q.last);
-          //q.removeLast();
           postfix.write(pop(q));
         }
         q.add(e); // Finally, add current operator to stack.
