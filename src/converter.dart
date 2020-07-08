@@ -7,7 +7,7 @@ import 'dart:collection';
 https://digitalcommons.unl.edu/cgi/viewcontent.cgi?article=1045&context=mathmidexppap
 */
 
-// We're using Queue as a stack, and this is the pop function.
+// We're using Queue as a stack, and this is the pop function of it.
 Object pop(Queue q) {
   var r = q.last;
   q.removeLast();
@@ -20,11 +20,17 @@ class Converter {
   Queue q;
   StringBuffer postfix;
 
-  Converter(String infix) {
-    this.infix = infix.replaceAll(new RegExp(r"\s+"), ""); // Remove whitespaces.
-    this.char_arr = this.infix.split("");
+  Converter() {
     this.q = new Queue();
     this.postfix = new StringBuffer();
+  }
+  void set set_infix(String infix) {
+    this.infix = infix.replaceAll(new RegExp(r"\s+"), ""); // Remove whitespaces.
+    this.char_arr = this.infix.split("");
+  }
+
+  String get get_infix {
+    return this.infix;
   }
 
   String get get_postfix {
