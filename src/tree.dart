@@ -1,9 +1,9 @@
 // https://www.geeksforgeeks.org/expression-tree/
+// TODO: Calculator.
 
 /**
 * A tree node.
 */
-// library tree;
 class Node {
   String node;
   Node left;
@@ -30,6 +30,4 @@ class ExpressionTree {
     }
     return false;
   }
-
-
 }

@@ -52,7 +52,7 @@ bool check_precedence(String top, String given) {
   }
   return false;
 }
-
+/*
 void main() {
   Queue q = new Queue(); // As a stack.
   var postfix = new StringBuffer();
@@ -100,4 +100,4 @@ void main() {
     postfix.write(pop(q));
   }
   print(postfix);
-}
+}*/

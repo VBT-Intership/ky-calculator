@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'base_util.dart';
+
 /**
 * Converts infix notation to Reverse-Polish Notation.
 * https://en.wikipedia.org/wiki/Reverse_Polish_notation
@@ -14,7 +16,7 @@ Object pop(Queue q) {
   return r;
 }
 
-class Converter {
+class Converter extends Base {
   String infix;
   var char_arr;
   Queue q;
@@ -35,42 +37,6 @@ class Converter {
 
   String get get_postfix {
     return this.postfix.toString();
-  }
-  bool parentheses(String c) {
-    if (c == "(" || c ==")") {
-      return true;
-    }
-    return false;
-  }
-  
-  bool left_parentheses(String c) {
-    if (c == "(") {
-      return true;
-    }
-    return false;
-  }
-
-  bool right_parentheses(String c) {
-    if (c == ")") {
-      return true;
-    }
-    return false;
-  }
-
-  bool isOperator(String c) {
-  if (c == "+" || c == "-" || c == "/" || c == "*") {
-    return true;
-  }
-  return false;
-}
-
-  bool isOperand(String c) {
-    try {
-      int.parse(c);
-      return true;
-    } catch (FormatException) {
-      return false;
-    }
   }
   
   /**

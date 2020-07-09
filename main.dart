@@ -1,3 +1,4 @@
+import 'src/calculator.dart';
 import 'src/converter.dart';
 import "dart:io";
 
@@ -11,17 +12,19 @@ bool isNotInfix(String infix) {
 
 void main() {
   var help = "Enter the arithmetic operation.\nExample: 5*(5+2)-6\nCTRL+C to quit.";
-  print(help);
+  Converter c = new Converter();
   while (true) {
+    print(help);
     String op = stdin.readLineSync();
     if (isNotInfix(op)) {
       print("Not a valid operation.");
       continue;
     }
-    Converter c = new Converter();
     c.set_infix = op;
     c.process(); // Convert to RPN.  
-    print(c.get_postfix);
-    // TODO: Calculate...
+    
+    Calculator calculator = new Calculator(c.get_postfix);
+    double result = calculator.calculate();
+    print("Result: $result\n");
   }
 }
