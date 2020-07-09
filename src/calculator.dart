@@ -2,10 +2,10 @@ import 'dart:collection';
 import 'base_util.dart';
 
 class Calculator extends Base {
-  var postfix_arr;
+  List postfix_arr;
   Queue q;
-  Calculator(String postfix) {
-    this.postfix_arr = postfix.split("");
+  Calculator(List postfix) {
+    this.postfix_arr = postfix;
     this.q = new Queue();
   }
   double add(double a, double b) {
@@ -13,7 +13,7 @@ class Calculator extends Base {
   }
   
   double sub(double a, double b) {
-    return a-b;
+    return a - b;
   }
   
   double div(double a, double b) {
@@ -40,7 +40,7 @@ class Calculator extends Base {
           this.q.add(this.div(temp1, temp2));
         }
         if (c == "*") {
-          this.q.add(this.mul(temp1, temp2));
+          this.q.add(this.mul(temp2, temp1));
         }
       }
     }

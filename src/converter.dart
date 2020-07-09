@@ -18,25 +18,45 @@ Object pop(Queue q) {
 
 class Converter extends Base {
   String infix;
-  var char_arr;
+  List<String> char_arr;
   Queue q;
-  StringBuffer postfix;
+  List<String> postfix;
 
   Converter() {
     this.q = new Queue();
-    this.postfix = new StringBuffer();
+    this.postfix = new List();
   }
+
+  List<String> preprocess() {
+    List<String> l = new List();
+    StringBuffer buffer = new StringBuffer();
+    var chars =  this.infix.split("");
+    for (var i in chars) {
+      if(!this.isOperator(i) && !this.parentheses(i)) {
+        buffer.write(i);
+      } else {
+        String num = buffer.toString();
+        l.add(num);
+        l.add(i);
+        buffer.clear();
+      }
+    }
+    l.add(buffer.toString());
+    return l;
+  }
+
   void set set_infix(String infix) {
     this.infix = infix.replaceAll(new RegExp(r"\s+"), ""); // Remove whitespaces.
-    this.char_arr = this.infix.split("");
+    //this.char_arr = this.infix.split("");
+    this.char_arr = this.preprocess();
   }
 
   String get get_infix {
     return this.infix;
   }
 
-  String get get_postfix {
-    return this.postfix.toString();
+  List get get_postfix {
+    return this.postfix;
   }
   
   /**
@@ -61,14 +81,14 @@ class Converter extends Base {
     for (int i = 0; i < this.char_arr.length; i++) {
       var e = char_arr[i];
       if (this.isOperand(e)) {     // CHECK - 1
-        this.postfix.write(e);
+        this.postfix.add(e);
       }
       if (this.isOperator(e)) {     // CHECK - 2
         if (this.q.isEmpty) { // initial stack.
           this.q.add(e);
         } else { // Precedence check.
           if (this.check_precedence(q.last, e)) {     // CHECK - 2b
-            this.postfix.write(pop(this.q));
+            this.postfix.add(pop(this.q));
           }
           this.q.add(e); // Finally, add current operator to stack.
         }
@@ -82,13 +102,13 @@ class Converter extends Base {
             if (p == "(") {
               break;
             }
-            this.postfix.write(p);
+            this.postfix.add(p);
           }
         }
       }
     }
     while(this.q.isNotEmpty) { // End of the string, pop all operators.
-      this.postfix.write(pop(this.q));
+      this.postfix.add(pop(this.q));
     }
   }
 
