@@ -16,7 +16,6 @@ void main() {
     print(help);
     Converter c = new Converter();
     String op = stdin.readLineSync();
-    //String op = "5+2";
     if (isNotInfix(op)) {
       print("Not a valid operation.");
       continue;
